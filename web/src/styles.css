@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{font-family:'DM Sans',sans-serif;color:#f2fcff;background:#071421;--accent:#6deee5;--panel:#0c2232;--border:#284a60;--muted:#a5c0d0;color-scheme:dark;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.55}a{color:inherit}
+.melodiva-shell{display:flex;min-height:100vh;background:radial-gradient(ellipse at 75% 0,#28304f48,transparent 55%),#061421}
+.melodiva-sidebar{width:242px;position:sticky;top:0;height:100vh;flex-shrink:0;display:flex;flex-direction:column;padding:25px 13px;background:#061824;border-right:1px solid #204052}
+.melodiva-brand{display:flex;gap:9px;align-items:center;text-decoration:none;padding:4px 8px 36px}
+.melodiva-brand-icon{width:45px;height:45px;border-radius:14px;background:linear-gradient(135deg,#1c7483,#564b87);display:grid;place-items:center}
+.melodiva-brand strong{display:block;white-space:nowrap;letter-spacing:-.04em;font:800 17px 'Space Grotesk',sans-serif;color:#fff}
+.melodiva-brand em{font-style:normal;color:#76eee4}
+.melodiva-brand small{display:block;letter-spacing:1.2px;color:#9bb5c8;font-size:8px;margin-top:3px}
+.melodiva-nav-caption{padding:0 13px 14px;color:#769baa;letter-spacing:1.5px;font-size:10px;font-weight:800}
+.melodiva-sidebar nav{display:grid;gap:7px}
+.melodiva-nav-link{display:flex;align-items:center;gap:12px;padding:13px;border:1px solid transparent;border-radius:12px;color:#abc6d2;text-decoration:none;font-size:12px;font-weight:700;transition:background .2s,color .2s}
+.melodiva-nav-link:hover{background:#123044;color:#f3fdff}
+.melodiva-nav-link.is-active{border-color:#267e89;background:#124454;color:#a8ffef}
+.melodiva-sidebar-footer{margin-top:auto;padding:20px 10px;color:#a0c6d4;border-top:1px solid #21495a;font-size:11px;line-height:1.6}
+.melodiva-sidebar-footer small{display:block;color:#7393a2;font-size:10px;margin-top:8px}
+.melodiva-online-dot{display:inline-block;height:7px;width:7px;margin-right:7px;border-radius:50%;background:#65eed3;box-shadow:0 0 12px #65eed373}
+.melodiva-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.melodiva-topbar{height:70px;padding:0 28px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #254353;background:#06172399}
+.melodiva-breadcrumb{display:flex;align-items:center;gap:13px;font-size:11px}.melodiva-breadcrumb span{color:#779aaa;letter-spacing:1px}.melodiva-breadcrumb strong{font-size:12px;color:#e8fcff}
+.melodiva-library-link{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;text-decoration:none;border:1px solid #2b6678;border-radius:9px;padding:10px 14px;color:#8ff5e7}
+.melodiva-mobile-menu{display:none;border:0;background:transparent;color:white}
+.melodiva-content{flex:1;width:100%;max-width:1700px;margin:0 auto;padding:28px clamp(16px,3vw,36px)}
+.melodiva-footer{display:flex;justify-content:space-between;gap:12px;padding:18px 32px;border-top:1px solid #1f3a4b;font-size:10px;color:#7c9ca9}
+.melodiva-home{display:grid;gap:29px}
+.melodiva-hero{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;min-height:350px;padding:44px clamp(25px,4vw,55px);border:1px solid #2f586d;border-radius:24px;background:radial-gradient(ellipse at 82% 24%,#7155b44f,transparent 40%),linear-gradient(130deg,#0a2535,#091627 80%);overflow:hidden}
+.melodiva-hero-copy{z-index:1}
+.melodiva-kicker{display:flex;gap:8px;align-items:center;font-size:10px;font-weight:800;letter-spacing:2px;color:#7af5ed}
+.melodiva-hero h1{font:800 clamp(40px,5.5vw,70px)/1.05 'Space Grotesk',sans-serif;letter-spacing:-2px;margin:23px 0 17px}
+.melodiva-hero h1 em{font-style:normal;background:linear-gradient(100deg,#65f3e3,#97baff,#d1a8ff);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.melodiva-hero p{max-width:510px;color:#b3c9d7;font-size:14px;line-height:1.8}
+.melodiva-cta{display:inline-flex;align-items:center;gap:15px;border:0;background:#7cf0df;color:#062530;font-weight:800;padding:14px 21px;border-radius:11px;margin-top:17px}
+.melodiva-hero-art{height:260px;position:relative;display:grid;place-items:center}
+.melodiva-orbit{position:absolute;width:320px;height:180px;transform:rotate(-20deg);border:1px solid #9cd4e44a;border-radius:50%}
+.melodiva-disc{display:grid;place-items:center;width:185px;height:185px;border-radius:50%;border:10px solid #29475b;background:repeating-radial-gradient(circle,#0c2536 0 5px,#34536a 6px 7px,#081b2e 8px 12px);box-shadow:0 0 60px #5de9e337;color:#80efe2}
+.melodiva-wave{position:absolute;bottom:12px;left:0;right:0;height:65px;display:flex;align-items:center;justify-content:center;gap:4px}
+.melodiva-wave i{width:3px;border-radius:4px;background:linear-gradient(#d2adff,#63e9ef)}
+.melodiva-section-heading h2{font:700 26px 'Space Grotesk',sans-serif;margin:10px 0 0}
+.melodiva-tool-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}
+.melodiva-tool-card{min-height:190px;display:flex;flex-direction:column;align-items:flex-start;gap:12px;text-align:left;border:1px solid #264b5e;background:#0c2233;padding:19px;border-radius:16px;color:#edfaff}
+.melodiva-tool-card:hover{border-color:#74eadc;background:#123548}
+.melodiva-tool-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:13px;background:#17485a;color:#85f4e7}
+.melodiva-tool-card strong{font:700 15px 'Space Grotesk',sans-serif}
+.melodiva-tool-card small{font-size:11px;color:#aac5d1}
+.melodiva-tool-card>svg{color:#7beedd;margin-top:auto}
+.melodiva-message{display:flex;align-items:center;gap:10px;color:#aac6d1;border:1px solid #264b5e;border-radius:13px;padding:16px;font-size:12px;line-height:1.7}
+.melodiva-message svg{flex-shrink:0;color:#7cf0e7}
+.melodiva-content .fullsong,.melodiva-content .textsong{max-width:1100px;margin:0 auto}
+.melodiva-content .fullsong{background:#0b2030;color:#bde7e4}
+.melodiva-content :is(.mm-generator-top,.mm-generator-compose,.mm-generator-library,.mm-generator-detail,.fullsong-section,.fullsong-banner,.generated-toolbar,.generated-item,.textsong,.mm-pricing-hero,.mm-pricing-card){border-color:#284e63;background-color:#0b2434}
+.melodiva-content :is(.mm-generator-primary,.textsong-generate){background:#75eadf;color:#082734}
+.melodiva-content :is(.mm-generator-primary,.textsong-generate):disabled{opacity:.5}
+.melodiva-content :is(input,textarea,select){color:#f0fcff;accent-color:#72f2e4}
+.melodiva-content :is(.fullsong,.mm-lyrics,.textsong,.generated-page,.mm-pricing){max-width:1450px;margin:0 auto}
+:focus-visible{outline:2px solid #7af5e7;outline-offset:3px}
+@media(max-width:1180px){.melodiva-tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.melodiva-hero{grid-template-columns:1fr 230px}}
+@media(max-width:800px){.melodiva-sidebar{position:fixed;z-index:30;left:0;top:0;bottom:0;transform:translateX(-100%);transition:transform .2s;box-shadow:20px 0 40px #0005}.melodiva-sidebar.is-open{transform:none}.melodiva-mobile-menu{display:inline-flex}.melodiva-topbar{justify-content:flex-start;gap:18px;padding:0 17px}.melodiva-library-link{margin-left:auto}.melodiva-hero{grid-template-columns:1fr}.melodiva-hero-art{display:none}}
+@media(max-width:530px){.melodiva-tool-grid{grid-template-columns:1fr}.melodiva-hero{padding:29px 20px}.melodiva-hero h1{font-size:40px}.melodiva-breadcrumb span{display:none}.melodiva-footer{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){.melodiva-sidebar,.melodiva-nav-link{transition:none}}
