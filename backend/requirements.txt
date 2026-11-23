@@ -4,3 +4,6 @@ python-multipart>=0.0.9
 numpy>=1.26,<3
 soundfile>=0.12
 # Optional: ACE-Step, Ollama, MusicGen (torch + transformers), S3 (boto3), Stripe.
+
+# PostgreSQL metadata backend
+psycopg[binary]>=3.2,<4
