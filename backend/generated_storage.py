@@ -30,6 +30,9 @@ _lock = RLock()
 
 
 def _connect():
+    if os.environ.get("STORAGE_METADATA_BACKEND", "sqlite").lower() == "postgres":
+        from metadata_postgres import connect
+        return connect()
     DB.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(DB, timeout=30)
     conn.row_factory = sqlite3.Row

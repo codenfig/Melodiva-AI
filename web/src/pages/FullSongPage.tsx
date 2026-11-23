@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { ArrowRight, Clock3, Download, Headphones, Mic2, Music2, Search, Sparkles, WandSparkles, RefreshCw, FileText, SlidersHorizontal, Trash2, Heart, CheckCircle2, AlertTriangle, X, Shuffle, ChevronRight, Plus, HelpCircle, Share2, MoreVertical, Play, Pause, SkipBack, SkipForward, Pencil, Copy, AudioLines, ShieldCheck } from 'lucide-react'
+import { ArrowRight, Clock3, Download, Headphones, Music2, Search, Sparkles, WandSparkles, RefreshCw, FileText, SlidersHorizontal, Trash2, Heart, CheckCircle2, AlertTriangle, X, Shuffle, ChevronRight, Plus, HelpCircle, Share2, MoreVertical, Play, Pause, SkipBack, SkipForward, Pencil, Copy, AudioLines, ShieldCheck } from 'lucide-react'
 import '../styles/full-song.css'
 
 type Voice = 'female' | 'male' | 'duet'
@@ -113,7 +113,7 @@ export default function FullSongPage() {
   const [deletingId,setDeletingId] = useState<string | null>(null)
   const [refreshKey,setRefreshKey] = useState(0)
   const [showDetails,setShowDetails] = useState(true)
-  const [detailTab,setDetailTab] = useState<'lyrics'|'details'|'stems'>('details')
+  const [,setDetailTab] = useState<'lyrics'|'details'|'stems'>('details')
   useEffect(()=>{let active=true;const load=async()=>{setLibraryLoading(true);try{const response=await fetch('/api/generated-files');if(!response.ok)throw new Error('Could not load music library');const data=await response.json() as {files:SavedSong[]};if(active){const items=data.files.filter(f=>f.category==='full_song'||f.category==='text_to_song');setSongs(items);setSelectedId(previous=>items.some(f=>f.id===previous)?previous:items[0]?.id||'');setLibraryError('')}}catch(e){if(active)setLibraryError(e instanceof Error?e.message:'Library unavailable')}finally{if(active)setLibraryLoading(false)}};void load();return()=>{active=false}},[refreshKey])
   async function deleteSong(song:SavedSong) {
     if(deletingId!==null)return

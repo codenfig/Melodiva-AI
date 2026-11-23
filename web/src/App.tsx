@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ArrowRight, Disc3, Download, FileMusic, FolderHeart, Heart, Headphones, Menu, Mic2, Music2, Sparkles, WandSparkles, X } from 'lucide-react'
+import { ArrowRight, Disc3, FileMusic, FolderHeart, Heart, Headphones, Menu, Music2, Sparkles, WandSparkles, X } from 'lucide-react'
 import FullSongPage from './pages/FullSongPage'
 import LyricsGeneratorPage from './pages/LyricsGeneratorPage'
 import TextToSongPage from './pages/TextToSongPage'
