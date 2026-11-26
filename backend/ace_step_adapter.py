@@ -48,7 +48,7 @@ def _api(path, payload=None):
 def make_payload(project):
     output = project.get("output")
     if output not in {"full_song", "instrumental"}:
-        raise ValueError("ACE-Step adapter supports mixed full songs and instrumentals, not isolated vocal stems.")
+        raise ValueError("ACE-Step adapter supports full_song and instrumental outputs, not isolated vocal stems.")
     voice = project.get("voice", "female")
     if voice not in {"female", "male", "duet"}:
         raise ValueError("Unsupported voice option.")
