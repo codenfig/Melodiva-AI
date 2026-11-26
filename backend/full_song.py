@@ -33,7 +33,15 @@ class SongProject(BaseModel):
     output: str = "full_song"
     bpm: int = Field(default=110, ge=60, le=180)
     minutes: int = Field(default=3, ge=2, le=4)
-    vocal_language: str = Field(default='en', min_length=2, max_length=12, pattern=r'^[A-Za-z0-9]+
+    vocal_language: str = Field(default="en", min_length=2, max_length=12, pattern=r"^[A-Za-z0-9]+$")
+    key_scale: str | None = Field(default=None, max_length=80)
+    time_signature: str | None = Field(default=None, max_length=80)
+    model: str | None = Field(default=None, max_length=80)
+    seed: int | None = None
+    inference_steps: int | None = Field(default=None, ge=1, le=200)
+    guidance_scale: float | None = Field(default=None, ge=0, le=30)
+    thinking: bool = False
+    use_format: bool = False
 
 
 def validate_project(project: SongProject):
