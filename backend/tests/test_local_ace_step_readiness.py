@@ -27,3 +27,13 @@ def test_full_song_status_is_distinct_from_vocal_stems(monkeypatch):
     status = engine_status()
     assert status["capabilities"]["full_song"] is False
     assert status["capabilities"]["vocals"] is False
+
+
+def test_instrumental_ace_step_opt_in(monkeypatch):
+    from pathlib import Path
+    monkeypatch.delenv("FULL_SONG_ENGINE_EXECUTABLE", raising=False)
+    monkeypatch.setenv("MELODIVA_ENABLE_ACESTEP", "1")
+    monkeypatch.setattr("full_song._local_ace_step_ready", lambda: True)
+    executable = _engine_command("instrumental")
+    assert executable is not None
+    assert Path(executable).name == "run_ace_step_gpu.sh"
