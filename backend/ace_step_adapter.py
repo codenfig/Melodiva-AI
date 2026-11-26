@@ -1,8 +1,8 @@
-"""Local-only ACE-Step 1.5 REST adapter for MixMaster Full Song Studio.
+"""ACE-Step 1.5 REST adapter for Melodiva Full Song Studio.
 
 Usage: python ace_step_adapter.py project.json output.wav
 ACE-Step must already be running on 127.0.0.1:8001 with models installed.
-No remote service, cloud API or paid credentials are used.
+Remote servers require HTTPS and an API key. No model weights are bundled.
 """
 import json
 import os
@@ -47,8 +47,8 @@ def _api(path, payload=None):
 
 def make_payload(project):
     output = project.get("output")
-    if output != "full_song":
-        raise ValueError("ACE-Step adapter currently supports mixed full_song only, not isolated vocal stems.")
+    if output not in {"full_song", "instrumental"}:
+        raise ValueError("ACE-Step adapter supports mixed full songs and instrumentals, not isolated vocal stems.")
     voice = project.get("voice", "female")
     if voice not in {"female", "male", "duet"}:
         raise ValueError("Unsupported voice option.")
@@ -56,18 +56,43 @@ def make_payload(project):
                     "duet": "male and female duet singing"}[voice]
     description = str(project.get("description", "")).strip()
     lyrics = str(project.get("lyrics", "")).strip()
-    if not description or not lyrics:
-        raise ValueError("Music description and lyrics are required.")
-    return {"prompt": (f"{project.get('genre', 'pop')}, {voice_prompt}, {description}")[:2000],
-            "lyrics": lyrics[:12000], "bpm": int(project.get("bpm", 110)),
-            "audio_duration": min(int(project.get("minutes", 3)) * 60, 600),
-            "vocal_language": "en", "audio_format": "wav",
-            "thinking": False, "use_format": False}
+    if not description or (output == "full_song" and not lyrics):
+        raise ValueError("Music description and lyrics are required for vocal songs.")
+    if output == "instrumental":
+        lyrics = "[inst]"
+    duration = int(project.get("minutes", 3)) * 60
+    if not 10 <= duration <= 600:
+        raise ValueError("ACE-Step duration must be 10 to 600 seconds.")
+    prompt = f"{project.get('genre', 'pop')}, {voice_prompt}, {description}" if output == "full_song" else f"{project.get('genre', 'pop')}, instrumental, no vocals, {description}"
+    payload = {"prompt": prompt[:2000], "lyrics": lyrics[:12000],
+               "bpm": int(project.get("bpm", 110)), "audio_duration": duration,
+               "vocal_language": project.get("vocal_language", "en"), "audio_format": "wav",
+               "thinking": bool(project.get("thinking", False)),
+               "use_format": bool(project.get("use_format", False))}
+    if not 40 <= payload["bpm"] <= 240:
+        raise ValueError("ACE-Step BPM must be between 40 and 240.")
+    if not isinstance(payload["vocal_language"], str) or not payload["vocal_language"].isalnum() or len(payload["vocal_language"]) > 12:
+        raise ValueError("Invalid vocal language.")
+    optional = {"key_scale": str, "time_signature": str, "model": str,
+                "seed": int, "inference_steps": int, "guidance_scale": (int, float)}
+    for key, expected in optional.items():
+        value = project.get(key)
+        if value is not None and value != "":
+            if isinstance(value, bool) or not isinstance(value, expected):
+                raise ValueError(f"Invalid ACE-Step {key}.")
+            if isinstance(value, str) and len(value) > 80:
+                raise ValueError(f"ACE-Step {key} exceeds length limit.")
+            payload[key] = value
+    if "inference_steps" in payload and not 1 <= payload["inference_steps"] <= 200:
+        raise ValueError("ACE-Step inference_steps must be between 1 and 200.")
+    if "guidance_scale" in payload and not 0 <= payload["guidance_scale"] <= 30:
+        raise ValueError("ACE-Step guidance_scale must be between 0 and 30.")
+    return payload
 
 
 def _download_audio(path, destination):
     parsed = urlsplit(path)
-    if parsed.scheme or parsed.netloc or parsed.path != "/v1/audio":
+    if parsed.scheme or parsed.netloc or parsed.path != "/v1/audio" or not parsed.query.startswith("path="):
         raise RuntimeError("ACE-Step returned an invalid local audio URL.")
     request = Request(BASE + path)
     token = os.environ.get("ACESTEP_API_KEY", "").strip()
