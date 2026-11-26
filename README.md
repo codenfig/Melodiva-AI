@@ -11,7 +11,7 @@ Melodiva AI is the **standalone music generation** application migrated from [co
 - Audio-conditioned song extension (requires separately configured engine)
 - Song library, playback/download, titles/artwork, metadata and local/S3 storage
 - Song-level commercial-license request, rights approval and optional Stripe checkout (not production ready without configuration, rights and security review)
-- ACE-Step and MusicGen local model adapters and diagnostics
+- ACE-Step 1.5 full-song and instrumental generation, with language, tempo, key/scale, time signature, seed, and inference controls; MusicGen local model adapters and diagnostics
 
 **Important:** Model weights, GPU software, external model servers, credentials, and existing user-generated files are **not** stored in Git. Model-based generation is unavailable until you configure compatible engines. The current backend uses in-process jobs that are not restart-durable, and user authentication is not yet implemented; **do not expose this app publicly without deploying appropriate access controls and production hardening.**
 
@@ -46,7 +46,9 @@ Copy the settings in `backend/storage.env.example` into your own **untracked** d
 - `FULL_SONG_ENGINE_EXECUTABLE`: path to executable accepting `project.json` and `output.wav` for instrumentals.
 - `FULL_SONG_VOCAL_EXECUTABLE`: same contract for vocal/full-song generation.
 - `FULL_SONG_EXTENSION_EXECUTABLE`: audio-conditioned extension engine accepting `request.json` and `continuation.wav`.
-- `MELODIVA_ENABLE_ACESTEP=1` permits the local ACE-Step adapter on its own service; models must be installed separately.
+- `MELODIVA_ENABLE_ACESTEP=1` permits the local ACE-Step 1.5 adapter for **mixed full songs and instrumentals** on its own service; models must be installed separately. This does not produce isolated vocal stems. An explicitly configured engine takes precedence.
+- Install ACE-Step separately from https://github.com/ace-step/ACE-Step-1.5 (`uv sync` then `uv run acestep-api`; default service `http://127.0.0.1:8001`). Keep the service on loopback unless secured.
+- The Full Song API accepts optional ACE-Step generation controls: `vocal_language` (e.g. `sw`), `key_scale`, `time_signature`, `model`, `seed`, `inference_steps`, `guidance_scale`, `thinking`, and `use_format`. The adapter maps an instrumental output to ACE-Step's `[inst]` token. These controls are ignored by other configured generation engines unless they support them.
 - `ACESTEP_BASE_URL` and `ACESTEP_API_KEY` configure the ACE-Step server. The adapter enforces authentication for remote hosts.
 - `MELODIVA_MUSICGEN_MODEL_DIR` and `MELODIVA_MUSICGEN_DEVICE` configure the optional offline MusicGen adapter (requires separately installed PyTorch/Transformers).
 - `MELODIVA_LYRICS_MODEL` configures the model in a separately installed Ollama server. `OLLAMA_URL` configures its address.
