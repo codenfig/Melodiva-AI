@@ -9,7 +9,7 @@ import subprocess
 from tempfile import TemporaryDirectory
 import wave
 from urllib.parse import urlsplit
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 from generated_storage import save_generated, song_identity
 from song_arrangement import arrangement
@@ -58,11 +58,19 @@ def validate_project(project: SongProject):
 def _local_ace_step_ready():
     """Auto-discovery must not claim ready when the local server is down."""
     base = os.environ.get("ACESTEP_BASE_URL", "http://127.0.0.1:8001").rstrip("/")
-    parsed = urlsplit(base)
-    if parsed.scheme != "http" or parsed.hostname not in {"127.0.0.1", "localhost", "::1"} or parsed.path:
-        return False
     try:
-        with urlopen(base + "/health", timeout=1.5) as response:
+        parsed = urlsplit(base)
+        if not parsed.hostname or parsed.username or parsed.password or parsed.path or parsed.query or parsed.fragment:
+            return False
+        loopback = parsed.hostname in {"127.0.0.1", "localhost", "::1"}
+        token = os.environ.get("ACESTEP_API_KEY", "").strip()
+        if parsed.scheme not in {"http", "https"} or (not loopback and (parsed.scheme != "https" or not token)):
+            return False
+        if not loopback and os.environ.get("MELODIVA_ENGINE_MODE") != "remote":
+            return False
+        headers = {"Authorization": "Bearer " + token} if token else {}
+        request = Request(base + "/health", headers=headers) if not loopback or token else base + "/health"
+        with urlopen(request, timeout=1.5) as response:
             return 200 <= response.status < 300
     except (OSError, ValueError, TimeoutError):
         return False
