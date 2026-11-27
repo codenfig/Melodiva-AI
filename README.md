@@ -105,3 +105,8 @@ bash scripts/start.sh
 ```
 
 Check http://127.0.0.1:8002/api/full-song/engine and refresh the studio engine status. A reachable health endpoint is not proof of successful inference; test a real song before deployment. GPU hosting and model downloads are separate costs. Stop the launcher with Ctrl+C and stop rented GPU instances separately when finished.
+
+
+### Google Colab GPU lab
+
+[Open the Melodiva ACE-Step notebook in Colab](https://colab.research.google.com/github/codenfig/Melodiva-AI/blob/main/notebooks/Melodiva_ACE_Step_Colab.ipynb). Select a GPU runtime, execute the setup and inference cells, download the WAV, then stop the runtime. This is interactive testing only; it does not expose a public API or enable the local Studio generation button. For persistent remote generation use the authenticated HTTPS deployment described above.
