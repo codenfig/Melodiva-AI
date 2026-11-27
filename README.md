@@ -88,3 +88,20 @@ GitHub Actions runs those checks on PRs. Live GPU/model execution, S3 storage, a
 ## License and legacy references
 
 This migration preserves existing feature logic for compatibility, with updated Melodiva branding and storage defaults. It does not grant third-party model licenses or commercial rights in generated music. See the source repo's original documentation for upstream installation requirements and legal limitations.
+
+
+## Managed ACE-Step: local or remote
+
+Run `bash scripts/setup.sh` then `bash scripts/start.sh` from the repository root. Install uv and Node.js first. Auto mode selects remote on Intel macOS and local elsewhere; override with MELODIVA_ENGINE_MODE=local or remote. Remote setup skips model installation. Without remote credentials the studio starts but AI generation remains disabled.
+
+For remote generation, deploy ACE-Step 1.5 on a supported GPU host using its upstream instructions. Expose its REST API through an authenticated HTTPS endpoint (no URL path prefix). Configure the same API key on the remote service and Melodiva. Never commit credentials.
+
+```bash
+export MELODIVA_ENGINE_MODE=remote
+export ACESTEP_BASE_URL=https://your-gpu-host.example
+read -rs ACESTEP_API_KEY
+export ACESTEP_API_KEY
+bash scripts/start.sh
+```
+
+Check http://127.0.0.1:8002/api/full-song/engine and refresh the studio engine status. A reachable health endpoint is not proof of successful inference; test a real song before deployment. GPU hosting and model downloads are separate costs. Stop the launcher with Ctrl+C and stop rented GPU instances separately when finished.
